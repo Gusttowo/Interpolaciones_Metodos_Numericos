@@ -3,12 +3,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sympy import Symbol
 
-
 # Valores conocidos
 #Extraemos los datos del archivo de texto
 x_values, y_values = intpl.extraer_datos('Interpolaciones\info_nueva.txt')
 
-# Punto en el que se quiere interpolar
+# Puntos en el que se quiere interpolar
 xinter = np.array([np.pi/4, -np.pi/5, np.pi/6])
 
 
@@ -25,10 +24,9 @@ x = np.linspace(-1, 1, 200, endpoint=True)
 yinterp= intpl.rbfsuperposit(x, coef, x_values,c)
 
 #Calculo de error para Base radial
-ErrBR = np.sqrt(np.sum((yinterp - ((1 / (1 + 25 * x**2))))**2) / len(yinterp))
+ErrBR = np.sqrt(np.sum((yinterp - (intpl.f(x)))**2) / len(yinterp))
 print('Parametro de forma: ', c)
-#print(yinterp)
-print('Error RMS de la aproximación: ', ErrBR)
+print('Error RMS de la aproximación RBF: ', ErrBR)
 
 
 #------------Interpolacion por Lagrange-------------------------------------------------------
@@ -38,8 +36,7 @@ print("El valor interpolado en x =", xinter, "es:", Lagrange_intepolated)
 #Invocamos la función del modulo para generar la interpolacion de lagrange
 y_plot = intpl.lagrange_interpolation(x_values, y_values, x)
 
-ErrLG = np.sqrt(np.sum((y_plot - (1 / (1 + 25 * x**2))**2) / len(y_plot)))
-#print(y_plot)
+ErrLG = np.sqrt(np.sum((y_plot - (intpl.f(x))**2) / len(y_plot)))
 print('Error RMS de la aproximación Lagrange: ', ErrLG)
 intpl.graficas(x,yinterp,y_plot,x_values,y_values, xinter, Lagrange_intepolated)
 
@@ -66,17 +63,18 @@ ultimo_dato = x_values[-1]
 
 puntosx_inti,puntosy_inti,polinomiox_inti,polinomioy_inti = intpl.interpolacion(x_values,y_values)
 inicio = 0.4
-fin = ultimo_dato+1
+fin = ultimo_dato + 1
 cantidad_numeros_deseados = len(polinomiox_inti)
 paso = (fin - inicio) / (cantidad_numeros_deseados - 1)
-x = np.arange(inicio, fin + paso, paso)
-Err = np.sqrt(np.sum((polinomioy_inti - (1 / (1 + 25 * x**2))**2) /len(polinomioy_inti)))
+x_jess = np.arange(inicio, fin + paso, paso)
+Err = np.sqrt(np.sum((polinomioy_inti - (intpl.f(x_jess))**2) /len(polinomioy_inti)))
 print("Error de nuestro polinomio", Err)
 
 
 #-----------------Interpolación de Newton-------------------------------
 # Calcular las diferencias divididas
 coeficientes = intpl.calcular_diferencias_divididas(x_values, y_values) # calcular_diferencias_divididas(x, y) implementa el calculo de las diferencias divididas
+
 
 #  GRAFICA
 y_grafica = np.array([intpl.evaluar_polinomio_newton(xinter, x_values, coeficientes) for xinter in x]) 

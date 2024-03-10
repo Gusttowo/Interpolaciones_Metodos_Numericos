@@ -2,6 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import sympy as sym
 
+def f(x):
+    return (1/(1 + 25 * x **2))
 
 
 #----------------------Metodos para interpolacion de lagrange-------------------------------------------
