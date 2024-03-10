@@ -9,7 +9,7 @@ from sympy import Symbol
 x_values, y_values = intpl.extraer_datos('Interpolaciones\info_nueva.txt')
 
 # Punto en el que se quiere interpolar
-xinter = np.array([0.785398163397, -0.628318530718, 0.523598775598])
+xinter = np.array([np.pi/4, -np.pi/5, np.pi/6])
 
 
 #----------interpolacion por base radial--------------------------------------------------------
@@ -79,13 +79,12 @@ print("Error de nuestro polinomio", Err)
 coeficientes = intpl.calcular_diferencias_divididas(x_values, y_values) # calcular_diferencias_divididas(x, y) implementa el calculo de las diferencias divididas
 
 #  GRAFICA
-#x_grafica = np.linspace(0, 8, 400) # Definimos el dominio de 0 a 8 y que en ese espacio nos marque 400 puntos
-y_grafica = np.array([intpl.evaluar_polinomio_newton(xinter, x_values, coeficientes) for xinter in x]) # 
+y_grafica = np.array([intpl.evaluar_polinomio_newton(xinter, x_values, coeficientes) for xinter in x]) 
 
 # Graficar los datos originales y el polinomio de Newton
 plt.figure() # asignamos el tamaño de la grafica
 plt.plot(x, y_grafica, label='Polinomio de Newton', color='green')
-plt.plot(x,(1 / (1 + 25 * x**2)),label='Función dada')
+plt.plot(x, (1 / (1 + 25 * x**2)), label='Función dada')
 plt.scatter(x_values, y_values, color='red', label='Datos Originales')
 plt.title('Datos y Aproximación por Polinomio de Newton y base radial')
 plt.xlabel('X')
