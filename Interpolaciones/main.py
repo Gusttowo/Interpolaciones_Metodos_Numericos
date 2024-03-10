@@ -6,10 +6,10 @@ from sympy import Symbol
 
 # Valores conocidos
 #Extraemos los datos del archivo de texto
-x_values, y_values = intpl.extraer_datos('datos.txt')
+x_values, y_values = intpl.extraer_datos('Interpolaciones\info_nueva.txt')
 
 # Punto en el que se quiere interpolar
-xinter = np.array([1.5,5.7])
+xinter = np.array([0.785398163397, -0.628318530718, 0.523598775598])
 
 #----------interpolacion por base radial--------------------------------------------------------
 #Definimos el parametro de forma llamado C
@@ -20,7 +20,7 @@ matint=intpl.interpmat(x_values,c)
 coef=np.linalg.solve(matint,y_values)
 
 #Evaluacion de la superposicion de sobre un intervalo
-x = np.arange(0.5, 8.05 ,0.05)
+x = np.linspace(-1, 1, 200, endpoint=True)
 yinterp= intpl.rbfsuperposit(x, coef, x_values,c)
 
 #Calculo de error para Base radial
