@@ -72,7 +72,7 @@ def rbfsuperposit(x, coef, xdat, c):
 #------------------Grafica para Lagrange y Funcion de Base Radial-----------------------------------------
 def graficas (x,yinterp,y_plot,x_values,y_values, xinter, Lagrange_intepolated):
     plt.figure()
-    plt.plot(x, (1 / (1 + 25 * x**2)), label= 'Función Logaritmo')
+    plt.plot(x, (1 / (1 + 25 * x**2)), label= 'Función 1/1+25x**2')
     plt.plot(x, yinterp, label = 'Interpolación RBF')
     plt.plot(x, y_plot, label = 'Polinomio Lagrange')
     plt.scatter(x_values, y_values, color='red', label='Datos')
@@ -157,6 +157,7 @@ def interpolacion(x,y):
     plt.xlabel('xi') #Añadimos una etiqueta
     plt.ylabel('fi') #Añadimos una etiqueta
     plt.title('Polinomio de Interpolación')#Añadimos un titulo
+    plt.grid(True)
     plt.show() #Para ver la gráfica
 
     puntosx = xi
