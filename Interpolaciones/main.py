@@ -11,9 +11,10 @@ x_values, y_values = intpl.extraer_datos('Interpolaciones\info_nueva.txt')
 # Punto en el que se quiere interpolar
 xinter = np.array([0.785398163397, -0.628318530718, 0.523598775598])
 
+
 #----------interpolacion por base radial--------------------------------------------------------
 #Definimos el parametro de forma llamado C
-c = 20
+c = 0.2
 matint=intpl.interpmat(x_values,c)
 
 #Coeficientes de la interpolacion 
@@ -24,7 +25,7 @@ x = np.linspace(-1, 1, 200, endpoint=True)
 yinterp= intpl.rbfsuperposit(x, coef, x_values,c)
 
 #Calculo de error para Base radial
-ErrBR = np.sqrt(np.sum((yinterp - np.log(x))**2) / len(yinterp))
+ErrBR = np.sqrt(np.sum((yinterp - ((1 / (1 + 25 * x**2))))**2) / len(yinterp))
 print('Parametro de forma: ', c)
 #print(yinterp)
 print('Error RMS de la aproximación: ', ErrBR)
@@ -37,7 +38,7 @@ print("El valor interpolado en x =", xinter, "es:", Lagrange_intepolated)
 #Invocamos la función del modulo para generar la interpolacion de lagrange
 y_plot = intpl.lagrange_interpolation(x_values, y_values, x)
 
-ErrLG = np.sqrt(np.sum((y_plot - np.log(x))**2) / len(y_plot))
+ErrLG = np.sqrt(np.sum((y_plot - (1 / (1 + 25 * x**2))**2) / len(y_plot)))
 #print(y_plot)
 print('Error RMS de la aproximación Lagrange: ', ErrLG)
 intpl.graficas(x,yinterp,y_plot,x_values,y_values, xinter, Lagrange_intepolated)
@@ -69,7 +70,7 @@ fin = ultimo_dato+1
 cantidad_numeros_deseados = len(polinomiox_inti)
 paso = (fin - inicio) / (cantidad_numeros_deseados - 1)
 x = np.arange(inicio, fin + paso, paso)
-Err = np.sqrt(np.sum((polinomioy_inti - np.log(x))**2)/len(polinomioy_inti))
+Err = np.sqrt(np.sum((polinomioy_inti - (1 / (1 + 25 * x**2))**2) /len(polinomioy_inti)))
 print("Error de nuestro polinomio", Err)
 
 
@@ -84,7 +85,7 @@ y_grafica = np.array([intpl.evaluar_polinomio_newton(xinter, x_values, coeficien
 # Graficar los datos originales y el polinomio de Newton
 plt.figure() # asignamos el tamaño de la grafica
 plt.plot(x, y_grafica, label='Polinomio de Newton', color='green')
-plt.plot(x,np.log(x),label='Función dada')
+plt.plot(x,(1 / (1 + 25 * x**2)),label='Función dada')
 plt.scatter(x_values, y_values, color='red', label='Datos Originales')
 plt.title('Datos y Aproximación por Polinomio de Newton y base radial')
 plt.xlabel('X')

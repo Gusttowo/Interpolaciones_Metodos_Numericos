@@ -2,6 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import sympy as sym
 
+
+
 #----------------------Metodos para interpolacion de lagrange-------------------------------------------
 #Esta función lee los datos de un archivo txt
 def extraer_datos(datos):
@@ -70,14 +72,13 @@ def rbfsuperposit(x, coef, xdat, c):
 #------------------Grafica para Lagrange y Funcion de Base Radial-----------------------------------------
 def graficas (x,yinterp,y_plot,x_values,y_values, xinter, Lagrange_intepolated):
     plt.figure()
-    plt.plot(x, np.log(x), label= 'Función Logaritmo')
+    plt.plot(x, (1 / (1 + 25 * x**2)), label= 'Función Logaritmo')
     plt.plot(x, yinterp, label = 'Interpolación RBF')
     plt.plot(x, y_plot, label = 'Polinomio Lagrange')
     plt.scatter(x_values, y_values, color='red', label='Datos')
 
     #Marcamos los valores interpolados x=1.5 y x=5.7
     plt.scatter(xinter, Lagrange_intepolated, color='purple', label='Valores Interpolados')
-
     plt.xlabel('x')
     plt.ylabel('y')
     plt.legend()
