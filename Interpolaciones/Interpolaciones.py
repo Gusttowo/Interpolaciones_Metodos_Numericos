@@ -74,9 +74,9 @@ def rbfsuperposit(x, coef, xdat, c):
 #------------------Grafica para Lagrange y Funcion de Base Radial-----------------------------------------
 def graficas (x,yinterp,y_plot,x_values,y_values, xinter, Lagrange_intepolated):
     plt.figure()
-    plt.plot(x, (1 / (1 + 25 * x**2)), label= 'Función 1/1+25x**2')
-    plt.plot(x, yinterp, label = 'Interpolación RBF')
-    plt.plot(x, y_plot, label = 'Polinomio Lagrange')
+    plt.plot(x, (1 / (1 + 25 * x**2)), label= 'Función 1/1+25x**2', linestyle='solid')
+    plt.plot(x, yinterp, label = 'Interpolación RBF', linestyle= 'dashed')
+    plt.plot(x, y_plot, label = 'Polinomio Lagrange', linestyle='dotted')
     plt.scatter(x_values, y_values, color='red', label='Datos')
 
     #Marcamos los valores interpolados x=1.5 y x=5.7
@@ -154,7 +154,7 @@ def interpolacion(x,y):
 
     #crearemos una grafica
     plt.plot(xi,fi,'o', label='Puntos')
-    plt.plot(pxi,pfi, label='Polinomio') #Trazamos la linea de los puntos
+    plt.plot(pxi,pfi, label='Polinomio', linestyle = 'dashed') #Trazamos la linea de los puntos
     plt.legend() #Mostrar todas las etiquetas
     plt.xlabel('xi') #Añadimos una etiqueta
     plt.ylabel('fi') #Añadimos una etiqueta
@@ -166,8 +166,9 @@ def interpolacion(x,y):
     puntosy = fi
     polinomiox = pxi
     polinomioy = pfi
-    print("X:1.5, Y:",px(1.5))
-    print("X:5.7, Y: ",px(5.7))
+    print("X:pi/4, Y:",px(np.pi/4))
+    print("X:-pi/5, Y:",px(-np.pi/5))
+    print("X:pi/6, Y: ",px(np.pi/6))
     return puntosx,puntosy,polinomiox,polinomioy
 
 

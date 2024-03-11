@@ -9,11 +9,13 @@ x_values, y_values = intpl.extraer_datos('Interpolaciones\info_nueva.txt')
 
 # Puntos en el que se quiere interpolar
 xinter = np.array([np.pi/4, -np.pi/5, np.pi/6])
-
+print('Se nos presentan 6 tipos de interpolación diferentes los cuales son: \nTrazodor Lineales y Cuadraticos\nPolinomico\nLagrange\nNewton.')
+print('De todos estos se nos piden evaluarlo en la función 1/1 + 25x^2, teniendo como restricción seleccionar 16 puntos en un intervalo de [-1,1].',
+'Adicional nos piden evaluar cada interpolacion en x=[pi/4, -pi/5, pi/6]')
 
 #----------interpolacion por base radial--------------------------------------------------------
 #Definimos el parametro de forma llamado C
-c = 0.2
+c = 0.01
 matint=intpl.interpmat(x_values,c)
 
 #Coeficientes de la interpolacion 
@@ -43,11 +45,12 @@ intpl.graficas(x,yinterp,y_plot,x_values,y_values, xinter, Lagrange_intepolated)
 
 
 
-#-----------Trazadore lineales-------------------------------------------
+#-----------Trazadores lineales-------------------------------------------
 y_trazL=intpl.Interpolante(y_values,x_values,xinter) #Llamamos la funcion Interpolante del Modelo y la guardamos en la variable y 
 
 plt.figure()
-plt.plot(x_values, y_values, label='Funcion interpolante') #se traza la linea entre los puntos
+plt.plot(x_values, y_values, label='Funcion interpolante', linestyle='dotted') #se traza la linea entre los puntos
+plt.plot(x, intpl.f(x), label= 'Función 1/1+25x**2', linestyle='solid')
 plt.scatter(xinter, y_trazL, color='green',label="Valor Interpolante") #se grafica el valor interpolante con un color verde 
 plt.scatter(x_values,y_values,color='red',label="Puntos Conocidos") #Se grafican los puntos conocidos con un color rojo
 plt.legend() #Se insertan las leyendas 
@@ -81,8 +84,8 @@ y_grafica = np.array([intpl.evaluar_polinomio_newton(xinter, x_values, coeficien
 
 # Graficar los datos originales y el polinomio de Newton
 plt.figure() # asignamos el tamaño de la grafica
-plt.plot(x, y_grafica, label='Polinomio de Newton', color='green')
-plt.plot(x, (1 / (1 + 25 * x**2)), label='Función dada')
+plt.plot(x, y_grafica, label='Polinomio de Newton', color='green', linestyle='dashed')
+plt.plot(x, intpl.f(x), label='Función dada', linestyle='solid')
 plt.scatter(x_values, y_values, color='red', label='Datos Originales')
 plt.title('Datos y Aproximación por Polinomio de Newton y base radial')
 plt.xlabel('X')
@@ -129,7 +132,7 @@ for i, segmento in enumerate(segmentos_x):
 
 # Graficar las ecuaciones interpoladas en sus rangos específicos
 for i, segmento in enumerate(segmentos_x):
-    plt.plot(segmento, segmentos_y[i], label=f'Ecuación {i+1}', color=np.random.rand(3,))
+    plt.plot(segmento, segmentos_y[i], label=f'Ecuación {i+1}', color=np.random.rand(3,), linestyle='dashed')
 plt.scatter(x_values, y_values, color='red', label='Datos de tabla')
 plt.legend()
 plt.title('Trazador Cuadrático')
