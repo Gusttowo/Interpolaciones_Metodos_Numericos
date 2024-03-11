@@ -144,14 +144,6 @@ def interpolacion(x,y):
     pxi = np.linspace(a,b) #Serie de puntos muestreados
     pfi = px(pxi) #puntos de la función,usando la forma numerica del polinomio
 
-    #Salida
-    print ('Matriz')
-    print (D[i,j])
-    print ('Coeficientes:')
-    print (coeficientes)
-    print ('polinomio: ')
-    print (polinomio)
-
     #crearemos una grafica
     plt.plot(xi,fi,'o', label='Puntos')
     plt.plot(pxi,pfi, label='Polinomio', linestyle = 'dashed') #Trazamos la linea de los puntos
@@ -166,9 +158,6 @@ def interpolacion(x,y):
     puntosy = fi
     polinomiox = pxi
     polinomioy = pfi
-    print("X:pi/4, Y:",px(np.pi/4))
-    print("X:-pi/5, Y:",px(-np.pi/5))
-    print("X:pi/6, Y: ",px(np.pi/6))
     return puntosx,puntosy,polinomiox,polinomioy
 
 
