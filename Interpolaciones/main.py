@@ -10,7 +10,7 @@ x_values, y_values = intpl.extraer_datos('Interpolaciones\info_nueva.txt')
 # Puntos en el que se quiere interpolar
 xinter = np.array([np.pi/4, -np.pi/5, np.pi/6])
 print('Se utilizan 6 métodos de interpolación los cuales son:\n-Funciones de Base Radial \n-Trazadores Lineales y Cuadraticos\n-Polinomico\n-Lagrange\n-Newton.\n\n')
-print('Se nos piden evaluarlos en la función 1/1 + 25x^2, teniendo como restricción seleccionar 16 puntos en un intervalo de [-1,1].',
+print('Se nos pide evaluar cada método en la función 1/1 + 25x^2, teniendo como restricción seleccionar 16 puntos en un intervalo de [-1,1].',
 'Adicional nos piden evaluar cada interpolacion en x=[pi/4, -pi/5, pi/6]. Con cada método de inteporlación aproximamos la función dada.\n')
 
 #----------interpolacion por base radial--------------------------------------------------------
