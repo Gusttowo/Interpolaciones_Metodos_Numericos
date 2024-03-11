@@ -5,7 +5,6 @@ import sympy as sym
 def f(x):
     return (1/(1 + 25 * x **2))
 
-
 #----------------------Metodos para interpolacion de lagrange-------------------------------------------
 #Esta función lee los datos de un archivo txt
 def extraer_datos(datos):
@@ -76,6 +75,16 @@ def graficas (x,yinterp,y_plot,x_values,y_values, xinter, Lagrange_intepolated):
     plt.figure()
     plt.plot(x, (1 / (1 + 25 * x**2)), label= 'Función 1/1+25x**2', linestyle='solid')
     plt.plot(x, yinterp, label = 'Interpolación RBF', linestyle= 'dashed')
+    plt.scatter(x_values, y_values, color='red', label='Datos')
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.legend()
+    plt.grid(True)
+    plt.title('Función de Base Radial')
+
+
+    plt.figure()
+    plt.plot(x, (1 / (1 + 25 * x**2)), label= 'Función 1/1+25x**2', linestyle='solid')
     plt.plot(x, y_plot, label = 'Polinomio Lagrange', linestyle='dotted')
     plt.scatter(x_values, y_values, color='red', label='Datos')
 
@@ -85,7 +94,7 @@ def graficas (x,yinterp,y_plot,x_values,y_values, xinter, Lagrange_intepolated):
     plt.ylabel('y')
     plt.legend()
     plt.grid(True)
-    plt.title('Interpolación con funciones de Base Radial vs Lagrange')
+    plt.title('Lagrange')
     plt.show()
 
 
