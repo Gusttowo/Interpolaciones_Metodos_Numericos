@@ -3,31 +3,31 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sympy import Symbol
 
-
 # Valores conocidos
 #Extraemos los datos del archivo de texto
-x_values, y_values = intpl.extraer_datos('datos.txt')
+data = np.loadtxt('Interpolaciones\datos.txt')
+x_values = np.array(data)
+y_values = intpl.funcion(x_values)
 
-# Punto en el que se quiere interpolar
-xinter = np.array([1.5,5.7])
+# Puntos en los que se quiere interpolar
+xinter = np.array([np.pi/4, -np.pi/5, np.pi/6])
 
-#----------interpolacion por base radial--------------------------------------------------------
+#----------interpolacion de Base Radial--------------------------------------------------------
 #Definimos el parametro de forma llamado C
-c = 20
+c = 0.01
 matint=intpl.interpmat(x_values,c)
 
 #Coeficientes de la interpolacion 
 coef=np.linalg.solve(matint,y_values)
 
 #Evaluacion de la superposicion de sobre un intervalo
-x = np.arange(0.5, 8.05 ,0.05)
+x = np.linspace(-1,1,200, endpoint= True)
 yinterp= intpl.rbfsuperposit(x, coef, x_values,c)
 
 #Calculo de error para Base radial
-ErrBR = np.sqrt(np.sum((yinterp - np.log(x))**2) / len(yinterp))
+ErrBR = np.sqrt(np.sum((yinterp - intpl.funcion(x))**2) / len(yinterp))
 print('Parametro de forma: ', c)
-#print(yinterp)
-print('Error RMS de la aproximación: ', ErrBR)
+print('Error RMS de la aproximación RBF es: ', ErrBR)
 
 
 #------------Interpolacion por Lagrange-------------------------------------------------------
@@ -37,21 +37,23 @@ print("El valor interpolado en x =", xinter, "es:", Lagrange_intepolated)
 #Invocamos la función del modulo para generar la interpolacion de lagrange
 y_plot = intpl.lagrange_interpolation(x_values, y_values, x)
 
-ErrLG = np.sqrt(np.sum((y_plot - np.log(x))**2) / len(y_plot))
-#print(y_plot)
+#Calculamos el error  entre las dos funciones
+ErrLG = np.sqrt(np.sum((y_plot - intpl.funcion(x))**2) / len(y_plot))
 print('Error RMS de la aproximación Lagrange: ', ErrLG)
+
+#Generamos las gráficas
 intpl.graficas(x,yinterp,y_plot,x_values,y_values, xinter, Lagrange_intepolated)
 
 
-
-
-#-----------Trazadore lineales-------------------------------------------
-y_trazL=intpl.Interpolante(y_values,x_values,xinter) #Llamamos la funcion Interpolante del Modelo y la guardamos en la variable y 
+#-----------Trazadores lineales-------------------------------------------
+#Llamamos la funcion Interpolante del Modelo y la guardamos en la variable y 
+y_trazL=intpl.Interpolante(y_values,x_values,xinter)
 
 plt.figure()
-plt.plot(x_values, y_values, label='Funcion interpolante') #se traza la linea entre los puntos
+plt.plot(x, intpl.funcion(x), label= 'Función 1/1+25x^2', linestyle="solid") #se traza la linea entre los puntos
 plt.scatter(xinter, y_trazL, color='green',label="Valor Interpolante") #se grafica el valor interpolante con un color verde 
-plt.scatter(x_values,y_values,color='red',label="Puntos Conocidos") #Se grafican los puntos conocidos con un color rojo
+plt.plot(x_values,y_values,color='red',label="Función interpolante", linestyle='dashed') #Se grafican los puntos conocidos con un color rojo
+plt.scatter(x_values, y_values, label = 'Puntos conocidos')
 plt.legend() #Se insertan las leyendas 
 plt.grid(True) #en el grafico se ponen cuadriculas
 plt.xlabel('Eje X') # Agregar etiquetas y título
@@ -63,14 +65,14 @@ plt.show()
 #-----------Interpolación Polinomica--------------------------------
 ultimo_dato = x_values[-1]
 
-puntosx_inti,puntosy_inti,polinomiox_inti,polinomioy_inti = intpl.interpolacion(x_values,y_values)
+puntosx_inti,puntosy_inti,polinomiox_inti,polinomioy_inti = intpl.interpolacion(x_values,y_values, x)
 inicio = 0.4
 fin = ultimo_dato+1
 cantidad_numeros_deseados = len(polinomiox_inti)
 paso = (fin - inicio) / (cantidad_numeros_deseados - 1)
-x = np.arange(inicio, fin + paso, paso)
-Err = np.sqrt(np.sum((polinomioy_inti - np.log(x))**2)/len(polinomioy_inti))
-print("Error de nuestro polinomio", Err)
+x_jess = np.arange(inicio, fin + paso, paso)
+Err = np.sqrt(np.sum((polinomioy_inti - intpl.funcion(x_jess))**2)/len(polinomioy_inti))
+print("Error de la interpolación polinomica es: ", Err)
 
 
 #-----------------Interpolación de Newton-------------------------------
@@ -78,15 +80,14 @@ print("Error de nuestro polinomio", Err)
 coeficientes = intpl.calcular_diferencias_divididas(x_values, y_values) # calcular_diferencias_divididas(x, y) implementa el calculo de las diferencias divididas
 
 #  GRAFICA
-#x_grafica = np.linspace(0, 8, 400) # Definimos el dominio de 0 a 8 y que en ese espacio nos marque 400 puntos
-y_grafica = np.array([intpl.evaluar_polinomio_newton(xinter, x_values, coeficientes) for xinter in x]) # 
+y_grafica = np.array([intpl.evaluar_polinomio_newton(xinter, x_values, coeficientes) for xinter in x])
 
 # Graficar los datos originales y el polinomio de Newton
 plt.figure() # asignamos el tamaño de la grafica
-plt.plot(x, y_grafica, label='Polinomio de Newton', color='green')
-plt.plot(x,np.log(x),label='Función dada')
+plt.plot(x, y_grafica, label='Polinomio de Newton', color='green', linestyle='dashed')
+plt.plot(x, intpl.funcion(x), label= 'Función 1/1+25x^2', linestyle="solid")
 plt.scatter(x_values, y_values, color='red', label='Datos Originales')
-plt.title('Datos y Aproximación por Polinomio de Newton y base radial')
+plt.title('Datos y Aproximación por Polinomio de Newton')
 plt.xlabel('X')
 plt.ylabel('Y')
 plt.grid(True)
@@ -95,8 +96,8 @@ plt.grid(True)
 valores_evaluados = [intpl.evaluar_polinomio_newton(x_val, x_values, coeficientes) for x_val in xinter]
 
 # Mostrar los resultados de la evaluación
-valores_evaluados_dict = dict(zip(xinter, valores_evaluados)) # zip combiana elementos iterales para crear pares ordenados y dic crea un diccionario que asocia los resultados evualados en esos puntos
-print(valores_evaluados_dict)
+# zip combina elementos iterales para crear pares ordenados y dic crea un diccionario que asocia los resultados evualados en esos puntos
+valores_evaluados_dict = dict(zip(xinter, valores_evaluados)) 
 plt.scatter(xinter, valores_evaluados, marker='o', color='orange', label='Puntos evaluados')  # Puntos evaluados
 plt.legend()
 plt.show()
@@ -131,7 +132,8 @@ for i, segmento in enumerate(segmentos_x):
 
 # Graficar las ecuaciones interpoladas en sus rangos específicos
 for i, segmento in enumerate(segmentos_x):
-    plt.plot(segmento, segmentos_y[i], label=f'Ecuación {i+1}', color=np.random.rand(3,))
+    plt.plot(segmento, segmentos_y[i], label=f'Ecuación {i+1}', linestyle='dashed')
+    plt.plot(segmento, intpl.funcion(segmento), linestyle="solid")
 plt.scatter(x_values, y_values, color='red', label='Datos de tabla')
 plt.legend()
 plt.title('Trazador Cuadrático')
