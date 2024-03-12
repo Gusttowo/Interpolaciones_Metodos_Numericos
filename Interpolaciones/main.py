@@ -157,7 +157,11 @@ for funcion, intervalo in funciones:
     y_valuess = [lambdify(Symbol('x'), funcion)(x_val) for x_val in x_valuess]
     plt.plot(x_valuess, y_valuess, linestyle = "dashed")
     plt.plot(x_valuess, intpl.funcion(x_valuess), linestyle="solid")
-    
+
+# Error con trazador cuadrático:
+Errcua = np.sqrt(np.sum((y_valuess - intpl.funcion(x_valuess))**2)/len(y_valuess))
+print("Error Trazador cuadrático de la aproximación: ", Errcua)
+ 
 plt.xlabel('x')
 plt.scatter(x_values, y_values, color='purple', label='Datos de tabla')
 plt.scatter(xinter, puntos_in,color = 'red', label='Punto de interpolación')
@@ -166,7 +170,3 @@ plt.title('Trazador Cuadrático')
 plt.legend()
 plt.grid(True)
 plt.show()
-
-# Error con trazador cuadrático:
-Errcua = np.sqrt(np.sum((y_valuess - intpl.funcion(x_valuess))**2)/len(y_valuess))
-print("Error Trazador cuadrático de la aproximación: ", Errcua)
