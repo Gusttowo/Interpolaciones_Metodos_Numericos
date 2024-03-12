@@ -295,9 +295,9 @@ def intervalos(valores_x):
     return intervalos
 
 #Funcion para asignar intervalos a cada función solución
-def asignarIntervalos(listasol,intervalos):
+def asignarIntervalos(solucion,intervalos):
     funciones = []
-    for i, funcion in enumerate(listasol):
+    for i, funcion in enumerate(solucion):
         intervalo = intervalos[i]
         funciones.append((funcion, intervalo))
     return funciones

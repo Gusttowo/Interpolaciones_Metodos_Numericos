@@ -1,7 +1,7 @@
 import Interpolaciones as intpl
 import numpy as np 
 import matplotlib.pyplot as plt
-from sympy import Symbol
+from sympy import Symbol, lambdify
 
 # Valores conocidos
 #Extraemos los datos del archivo de texto
@@ -117,25 +117,32 @@ incognis = intpl.incognitas(soluciones)
 # Calcular las ecuaciones con los coeficientes reemplazados
 ecuaciones_con_coeficientes = intpl.reemplazar_coeficientes(ecuaciones_array, soluciones, deriv_eva)
 
-#Gráficos
-# Crear una lista para almacenar los valores de x correspondientes a cada segmento
-segmentos_x = [np.linspace(x_values[i], x_values[i+1], 20) for i in range(len(x_values) - 1)]
+intervalos = intpl.intervalos(x_values)
 
-# Crear una lista para almacenar los valores de y correspondientes a cada segmento
-segmentos_y = []
+funciones = intpl.asignarIntervalos(ecuaciones_con_coeficientes, intervalos)
 
-# Iterar sobre cada segmento y evaluar las ecuaciones
-for i, segmento in enumerate(segmentos_x):
-    # Evaluar la ecuación correspondiente al segmento actual
-    y_ecuacion_segmento = np.array([ecuaciones_con_coeficientes[i].subs(x, val) for val in segmento])
-    segmentos_y.append(y_ecuacion_segmento)
+#Puntos de la interpolación
+puntos_in = []
+for x in xinter:
+    for funcion, intervalo in zip(ecuaciones_con_coeficientes, intervalos):
+        if intervalo[0] <= x <= intervalo[1]:
+            punto_y = lambdify(Symbol('x'), funcion)(x)
+            puntos_in.append(punto_y)
+            break
+        
 
-# Graficar las ecuaciones interpoladas en sus rangos específicos
-for i, segmento in enumerate(segmentos_x):
-    plt.plot(segmento, segmentos_y[i], label=f'Ecuación {i+1}', linestyle='dashed')
-    plt.plot(segmento, intpl.funcion(segmento), linestyle="solid")
-plt.scatter(x_values, y_values, color='red', label='Datos de tabla')
-plt.legend()
+#Graficar cada funcion
+for funcion, intervalo in funciones:
+    x_valuess = np.linspace(intervalo[0], intervalo[1], 200)
+    y_valuess = [lambdify(Symbol('x'), funcion)(x_val) for x_val in x_valuess]
+    plt.plot(x_valuess, y_valuess, linestyle = "dashed")
+    plt.plot(x_valuess, intpl.funcion(x_valuess), linestyle="solid")
+    
+plt.xlabel('x')
+plt.scatter(x_values, y_values, color='purple', label='Datos de tabla')
+plt.scatter(xinter, puntos_in,color = 'red', label='Punto de interpolación')
+plt.ylabel('f(x)')
 plt.title('Trazador Cuadrático')
+plt.legend()
 plt.grid(True)
 plt.show()
