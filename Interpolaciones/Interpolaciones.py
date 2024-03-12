@@ -287,3 +287,17 @@ def reemplazar_coeficientes(ecuaciones_array, soluciones, deriv_eva):
     return ecuaciones_array
 
 # Creación de intervalos
+def intervalos(valores_x):
+    intervalos = []
+    for i in range(len(valores_x)-1):
+        intervalo = (valores_x[i], valores_x[i+1])
+        intervalos.append(intervalo)
+    return intervalos
+
+#Funcion para asignar intervalos a cada función solución
+def asignarIntervalos(listasol,intervalos):
+    funciones = []
+    for i, funcion in enumerate(listasol):
+        intervalo = intervalos[i]
+        funciones.append((funcion, intervalo))
+    return funciones
