@@ -25,7 +25,7 @@ matint=intpl.interpmat(x_values,c)
 coef=np.linalg.solve(matint,y_values)
 
 #Evaluacion de la superposicion de sobre un intervalo
-x = np.linspace(-1,1,200, endpoint= True)
+x = np.linspace(-1,1, num = 200)
 yinterp= intpl.rbfsuperposit(x, coef, x_values,c)
 
 #Calculo de error para Base radial
@@ -65,6 +65,10 @@ plt.ylabel('Eje Y')
 plt.title('Trazador Lineal')
 plt.show()
 
+#Evaluación de la superposición sobre un intervalo
+y_plotL= intpl.Interpolante(y_values,x_values,x)
+ErrTl=np.sqrt(np.sum((y_plotL- (intpl.funcion(x)))**2)/len(y_plotL))
+print('Error RMS de la funcion Trazador lineal es de: ', ErrTl)
 
 #-----------Interpolación Polinomica--------------------------------
 ultimo_dato = x_values[-1]
@@ -150,3 +154,7 @@ plt.title('Trazador Cuadrático')
 plt.legend()
 plt.grid(True)
 plt.show()
+
+# Error con trazador cuadrático:
+Errcua = np.sqrt(np.sum((y_valuess - intpl.funcion(x_valuess))**2)/len(y_valuess))
+print("Error Trazador cuadrático de la aproximación: ", Errcua)

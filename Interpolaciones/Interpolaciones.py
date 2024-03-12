@@ -100,7 +100,7 @@ def Interpolante(fxi,x_i,x):# En esta funcion buscamos el valor interpolante
             for i in range(1,len(x_i)):
                 if (x[j] <= x_i[i] and num!=x[j]):
                     num=x[j]
-                    y=round(fxi[i]+((fxi[i]-fxi[i-1])/(x_i[i]-x_i[i-1]))*(x[j]-x_i[i]),4)
+                    y=fxi[i]+((fxi[i]-fxi[i-1])/(x_i[i]-x_i[i-1]))*(x[j]-x_i[i])
             res.append(y)
     return res
 
