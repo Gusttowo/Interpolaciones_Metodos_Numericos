@@ -36,7 +36,6 @@ print('Error RMS de la aproximación RBF es: ', ErrBR)
 
 #------------Interpolacion por Lagrange-------------------------------------------------------
 Lagrange_intepolated = intpl.lagrange_interpolation(x_values, y_values, xinter)
-print("El valor interpolado en x =", xinter, "es:", Lagrange_intepolated)
 
 #Invocamos la función del modulo para generar la interpolacion de lagrange
 y_plot = intpl.lagrange_interpolation(x_values, y_values, x)
@@ -109,6 +108,11 @@ valores_evaluados_dict = dict(zip(xinter, valores_evaluados))
 plt.scatter(xinter, valores_evaluados, marker='o', color='orange', label='Puntos evaluados')  # Puntos evaluados
 plt.legend()
 plt.show()
+
+#Calcula el error de aproximacion para la interpolacion de Newton
+y_interpolacion_newton = np.array([intpl.evaluar_polinomio_newton(xi, x_values, coeficientes) for xi in x])
+Err_newton = np.sqrt(np.sum((y_interpolacion_newton - intpl.funcion(x))**2) / len(y_interpolacion_newton))
+print('Error RMS para interpolación de Newton:', Err_newton)
 
 
 #-----------------Trazadores Cuadraticos-------------------------
