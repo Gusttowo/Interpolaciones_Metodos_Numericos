@@ -3,6 +3,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sympy import Symbol, lambdify
 
+print('Se utilizan 6 métodos de interpolación los cuales son:\n-Funciones de Base Radial \n-Trazadores Lineales y Cuadraticos\n-Polinomico\n-Lagrange\n-Newton.\n\n')
+print('Se nos pide evaluar cada método en la función 1/1 + 25x^2, teniendo como restricción seleccionar 16 puntos en un intervalo de [-1,1].',
+'Adicional nos piden evaluar cada interpolacion en x=[pi/4, -pi/5, pi/6]. Con cada método de inteporlación aproximamos la función dada.\n')
+
 # Valores conocidos
 #Extraemos los datos del archivo de texto
 data = np.loadtxt('Interpolaciones\datos.txt')
