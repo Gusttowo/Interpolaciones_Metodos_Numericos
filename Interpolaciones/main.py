@@ -1,3 +1,11 @@
+'''Autores:
+    Derney Steven Muñoz Vargas 
+    Yely Leana Gómez Vargas
+    Cristian Danilo Tobón Marulanda
+    Gustavo Velásquez Granado
+    Jessica Andrea Torres Uribe
+'''
+
 import Interpolaciones as intpl
 import numpy as np 
 import matplotlib.pyplot as plt
