@@ -2,19 +2,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 import sympy as sym
 
+
+#----------------------Hallar los valores de y---------------------------------------------------------
+def funcion (x):
+    return 1/(1+25*x**2)
+
+def ValoresY (x_values,funcion):
+    y_values = [funcion(x) for x in x_values]
+    return y_values
+
 #----------------------Metodos para interpolacion de lagrange-------------------------------------------
-#Esta función lee los datos de un archivo txt
-def extraer_datos(datos):
-    x_values = []
-    y_values = []
-    datos = np.loadtxt(datos)
-    for i in range(len(datos)):
-        x_values.append(datos[i][0])
-    for j in range(len(datos)):
-        y_values.append(datos[j][1])
-    return x_values,y_values
-
-
 def lagrange_interpolation(x_values, y_values, x):
     """
     Realiza la interpolación de Lagrange para encontrar el valor de f(x)
@@ -66,25 +63,32 @@ def rbfsuperposit(x, coef, xdat, c):
             y[i] = y[i] + coef[j]*rbffunction(x[i], xdat[j], c)
     return y
 
-
 #------------------Grafica para Lagrange y Funcion de Base Radial-----------------------------------------
 def graficas (x,yinterp,y_plot,x_values,y_values, xinter, Lagrange_intepolated):
     plt.figure()
-    plt.plot(x, np.log(x), label= 'Función Logaritmo')
-    plt.plot(x, yinterp, label = 'Interpolación RBF')
-    plt.plot(x, y_plot, label = 'Polinomio Lagrange')
+    plt.plot(x, funcion(x), label= 'Función 1/1+25x^2', linestyle = 'solid')
+    plt.plot(x, yinterp, label = 'Interpolación RBF', linestyle = 'dashed')
     plt.scatter(x_values, y_values, color='red', label='Datos')
-
-    #Marcamos los valores interpolados x=1.5 y x=5.7
-    plt.scatter(xinter, Lagrange_intepolated, color='purple', label='Valores Interpolados')
-
     plt.xlabel('x')
     plt.ylabel('y')
     plt.legend()
     plt.grid(True)
-    plt.title('Interpolación con funciones de Base Radial vs Lagrange')
+    plt.title('Interpolación con funciones de Base Radial')
     plt.show()
 
+
+    plt.figure()
+    plt.plot(x, y_plot, label = 'Polinomio Lagrange', linestyle = 'dashed')
+    plt.plot(x, funcion(x), label= 'Función 1/1+25x^2', linestyle = 'solid')
+    plt.scatter(x_values, y_values, color='red', label='Datos')
+    #Marcamos los valores interpolados
+    plt.scatter(xinter, Lagrange_intepolated, color='purple', label='Valores Interpolados')
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.legend()
+    plt.grid(True)
+    plt.title('Interpolación de Lagrange')
+    plt.show()
 
 
 #-----------Trazadore lineales-------------------------------------------
@@ -96,14 +100,14 @@ def Interpolante(fxi,x_i,x):# En esta funcion buscamos el valor interpolante
             for i in range(1,len(x_i)):
                 if (x[j] <= x_i[i] and num!=x[j]):
                     num=x[j]
-                    y=round(fxi[i]+((fxi[i]-fxi[i-1])/(x_i[i]-x_i[i-1]))*(x[j]-x_i[i]),4)
+                    y=fxi[i]+((fxi[i]-fxi[i-1])/(x_i[i]-x_i[i-1]))*(x[j]-x_i[i])
             res.append(y)
     return res
 
 
 #-----------Interpolación Polinomica-----------------------------------
 # Ingreso de datos, pero acá están presentados como listas
-def interpolacion(x,y):
+def interpolacion(x,y,x2):
     # Procedimiento, pasamos a convertirlos en arreglos
     xi = np.array(x)
     fi = np.array(y)
@@ -141,29 +145,22 @@ def interpolacion(x,y):
     pxi = np.linspace(a,b) #Serie de puntos muestreados
     pfi = px(pxi) #puntos de la función,usando la forma numerica del polinomio
 
-    #Salida
-    print ('Matriz')
-    print (D[i,j])
-    print ('Coeficientes:')
-    print (coeficientes)
-    print ('polinomio: ')
-    print (polinomio)
-
     #crearemos una grafica
     plt.plot(xi,fi,'o', label='Puntos')
-    plt.plot(pxi,pfi, label='Polinomio') #Trazamos la linea de los puntos
+    plt.plot(x2, funcion(x2), label= 'Función 1/1+25x^2', linestyle = 'solid')
+    plt.plot(pxi,pfi, label='Polinomio', linestyle='dashed') #Trazamos la linea de los puntos
     plt.legend() #Mostrar todas las etiquetas
     plt.xlabel('xi') #Añadimos una etiqueta
     plt.ylabel('fi') #Añadimos una etiqueta
     plt.title('Polinomio de Interpolación')#Añadimos un titulo
+    plt.grid(True) 
     plt.show() #Para ver la gráfica
 
     puntosx = xi
     puntosy = fi
     polinomiox = pxi
     polinomioy = pfi
-    print("X:1.5, Y:",px(1.5))
-    print("X:5.7, Y: ",px(5.7))
+
     return puntosx,puntosy,polinomiox,polinomioy
 
 
@@ -288,3 +285,19 @@ def reemplazar_coeficientes(ecuaciones_array, soluciones, deriv_eva):
         ecuaciones_array[i] = ecuacion
 
     return ecuaciones_array
+
+# Creación de intervalos
+def intervalos(valores_x):
+    intervalos = []
+    for i in range(len(valores_x)-1):
+        intervalo = (valores_x[i], valores_x[i+1])
+        intervalos.append(intervalo)
+    return intervalos
+
+#Funcion para asignar intervalos a cada función solución
+def asignarIntervalos(solucion,intervalos):
+    funciones = []
+    for i, funcion in enumerate(solucion):
+        intervalo = intervalos[i]
+        funciones.append((funcion, intervalo))
+    return funciones
